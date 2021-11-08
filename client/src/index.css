@@ -12,3 +12,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.cardEffect {
+  cursor: pointer;
+  transition: transform .2s ease-in-out;
+}
+
+.cardEffect:hover {
+  transform: scale(1.01);
+}
+
+.card-img {
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.productpage-img {
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.admin form {
+  max-width: 500px;
+}
