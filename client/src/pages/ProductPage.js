@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {ClipLoader} from "react-spinners";
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ProductPage() {
     const { productId } = useParams();
@@ -9,15 +10,12 @@ export default function ProductPage() {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        if (productId != 1) navigate('/404');
-        setProduct(
-            {"id":1,
-            "title":"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-            "price":109.95,
-            "description":"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-            "image":"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-            })
-        setLoading(false);
+        axios.get(`https://localhost:44310/api/Products/${productId}`)
+        .then(({ data }) => {
+            setProduct(data);
+            setLoading(false);
+        })
+        .catch(err => navigate('/404'))
     }, [])
 
     if (loading) return <div className="flex-fill d-flex align-items-center justify-content-center">
