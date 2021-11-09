@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
 using API.Entities;
+using API.Models;
 
 namespace API.Controllers
 {
@@ -73,16 +74,34 @@ namespace API.Controllers
             return NoContent();
         }
 
+
+
+
+
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(CreateProductModel model)
         {
+
+            var product = new Product()
+            {
+                Title = model.Title,
+                Description = model.Description,
+                Price = model.Price,
+                Image = model.Image,
+            };
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
+
+
+
+
+
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]

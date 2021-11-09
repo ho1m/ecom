@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
 using API.Entities;
+using API.Models;
 
 namespace API.Controllers
 {
@@ -21,12 +22,32 @@ namespace API.Controllers
             _context = context;
         }
 
+
+
+
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = new List<UserModel>();
+
+            foreach (var user in await _context.Users.Include(x => x.Address).ToListAsync())
+                users.Add(new UserModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    AddressLine = user.Address.AddressLine,
+                    ZipCode = user.Address.ZipCode,
+                    City = user.Address.City
+                });
+
+            return users;
         }
+
+
+
 
         // GET: api/Users/5
         [HttpGet("{id}")]
@@ -79,8 +100,22 @@ namespace API.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(CreateUserModel model)
         {
+            var user = new User()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                Password = model.Password,
+                Address = new Address
+                {
+                    AddressLine = model.AddressLine,
+                    ZipCode = model.ZipCode,
+                    City = model.City
+                }
+            };
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
