@@ -23,10 +23,10 @@ export default function ProductPage() {
     </div>;
 
     return (
-        <div className="flex-fill py-3 container text-center">
+        <div className="container py-3 text-center flex-fill">
             <h2 className="fs-3">{product.title}</h2>
-            <div className="d-flex flex-wrap">
-                <img src={product.image} alt="" className="productpage-img mx-auto my-3" />
+            <div className="d-flex flex-column">
+                <img src={product.image} alt="" className="mx-auto my-3 productpage-img" />
                 <div className="">
                     <p className="card-text fs-4">{product.description}</p>
                     <p className="card-text">${product.price}</p>
