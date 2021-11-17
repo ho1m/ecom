@@ -30,6 +30,9 @@ namespace API
         {
             services.AddDbContext<SqlContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnect")));
 
+            services.AddControllers()
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

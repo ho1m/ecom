@@ -66,8 +66,18 @@ namespace API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, ChangeUserModel model)
         {
+            var user = new User()
+            {
+                Id = model.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                Password = model.Password,
+                AddressId = model.AddressId
+            };
+
             if (id != user.Id)
             {
                 return BadRequest();
